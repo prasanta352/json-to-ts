@@ -2,7 +2,7 @@ export enum TypeGroup {
   Primitive,
   Array,
   Object,
-  Date
+  Date,
 }
 
 export interface TypeDescription {
@@ -34,6 +34,7 @@ export interface InterfaceDescription {
 
 export interface Options {
   rootName: string;
+  makeUseOfWholeObject?: boolean;
 }
 
 export interface KeyMetaData {

@@ -6,9 +6,16 @@ import { getNames } from "./get-names";
 import { isArray, isObject } from "./util";
 shim();
 
+/**
+ * Name
+ * @param json
+ * @param userOptions
+ * @returns
+ */
 export default function JsonToTS(json: any, userOptions?: Options): string[] {
   const defaultOptions: Options = {
     rootName: "RootObject",
+    makeUseOfWholeObject: true,
   };
   const options = {
     ...defaultOptions,
@@ -32,7 +39,7 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
    */
   optimizeTypeStructure(typeStructure);
 
-  const rootResponseName = options.rootName + "Response";
+  const rootResponseName = options.makeUseOfWholeObject ? options.rootName + "Response" : options.rootName;
   const names = getNames(typeStructure, rootResponseName);
   const interfaceDescriptions = getInterfaceDescriptions(typeStructure, names);
   const out = interfaceDescriptions.map(getInterfaceStringFromDescription);
@@ -43,7 +50,7 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
     ...out,
   ];
 
-  return finalOut;
+  return options.makeUseOfWholeObject ? finalOut : out;
 }
 
 (<any>JsonToTS).default = JsonToTS;
